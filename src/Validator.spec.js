@@ -9,12 +9,12 @@ import { Validator, validationStates } from './Validator'
 configure({ adapter: new Adapter() })
 
 const joiObject = Joi.object().keys({
-  yolo: Joi.string().min(5).required()
+  yolo: Joi.string().min(3).max(500).regex(/^[a-z\s]*$/).required(),
 })
 
 describe('Joi', () => {
   it('should show no errors', () => {
-    let data = {yolo: 'swag swag'}
+    let data = {yolo: 'swagswag'}
     const form = (
 			<Validator data={data} joiObject={joiObject}>
         {(isValid, validations) => {
@@ -50,7 +50,7 @@ describe('Joi', () => {
     )
 
     const mounted = mount(form)
-    mounted.find('input').simulate('change', { target: { name: 'yolo', value: 'yeo' } })
+    mounted.find('input').simulate('change', { target: { name: 'yolo', value: 'y' } })
     setTimeout(() => {
       expect(mounted.find('div').find('label').length).toBe(1)
     }, 10)

@@ -1,9 +1,8 @@
 import { func, object } from 'prop-types'
 import React, {Component} from 'react'
-import Joi from 'joi'
+import Joi from 'joi-browser'
 
-const getChild = (object, field) => {
-  let path = field.split('.')
+const getChild = (object, path) => {
   let item
   if (path.length > 1) {
     item = object[path[0]]
@@ -65,38 +64,38 @@ export const validationStates = {
 }
 
 export class Validator extends Component {
-	static propTypes = {
-		data: object.isRequired,
+  static propTypes = {
+    data: object.isRequired,
     joiObject: object.isRequired
-	}
+  }
 
-	constructor(props) {
-		super(props)
+  constructor(props) {
+    super(props)
 
-		this.state = {
-			isValid: false,
-			validations: initialValidations(props.data)
-		}
-	}
+    this.state = {
+      isValid: false,
+      validations: initialValidations(props.data)
+    }
+  }
 
-	componentDidMount () {
-		this.handleFormValueChange(this.props)
-	}
+  componentDidMount () {
+    this.handleFormValueChange(this.props)
+  }
 
-	componentWillReceiveProps (props) {
+  componentWillReceiveProps (props) {
     this.handleFormValueChange(props)
-	}
+  }
 
-	handleFormValueChange = (props) => {
+  handleFormValueChange = (props) => {
     joiValidate(props.joiObject, props.data)
-			.then(({ isValid, validations }) => this.setState({ isValid, validations }))
-			.catch(ex => {
-			  console.log(ex)
-    		throw ex
+      .then(({ isValid, validations }) => this.setState({ isValid, validations }))
+      .catch(ex => {
+        console.log(ex)
+        throw ex
       })
-	}
+  }
 
-	render() {
-		return this.props.children(this.state.isValid, this.state.validations)
-	}
+  render() {
+    return this.props.children(this.state.isValid, this.state.validations)
+  }
 }

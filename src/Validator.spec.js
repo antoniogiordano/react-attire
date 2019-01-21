@@ -3,6 +3,7 @@ import { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import React from 'react'
 import Joi from 'joi-browser'
+const myCustomJoi = Joi.extend(require('joi-phone-number'))
 
 import { Validator, validationStates } from './Validator'
 
@@ -37,7 +38,7 @@ describe('Joi', () => {
   it('should show an error label', () => {
     let data = {yolo: 'swag swag'}
     const form = (
-			<Validator data={data} joiObject={joiObject}>
+			<Validator data={data} joiObject={joiObject} joi={myCustomJoi}>
         {(isValid, validations) => {
           return <div>
 						<input name="yolo" value={data.yolo} onChange={() => data.yolo = ''}/>

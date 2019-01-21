@@ -32,6 +32,7 @@
 		"enzyme-adapter-react-16": "^1.0.1",
 		"jest": "^21.2.1",
 		"joi-browser": "^13.4.0",
+		"joi-phone-number": "2.1.1",
 		"jsdom": "^11.3.0",
 		"react": "^16.0.0",
 		"react-dom": "^16.0.0",

@@ -25,7 +25,7 @@ const joiValidate = (joi, joiObject, data) => {
   return new Promise((resolve, reject) => {
     let validations = {}
     Object.keys(data).forEach(field => validations[field] = {state: validationStates.CORRECT, error: null})
-    joi.validate(data, joiObject, {abortEarly: false}, (err) => {
+    joi.validate(data, joiObject, {abortEarly: false}, (err, data) => {
       if (err) {
         err.details.map((item) => {
           const { object, field } = getChild(data, item.path)
@@ -45,7 +45,8 @@ const joiValidate = (joi, joiObject, data) => {
       }
       return resolve({
         isValid: !err,
-        validations
+        validations,
+        data
       })
     })
   })
@@ -79,7 +80,8 @@ export class Validator extends Component {
 
     this.state = {
       isValid: false,
-      validations: initialValidations(props.data)
+      validations: initialValidations(props.data),
+      data: null
     }
   }
 
@@ -93,7 +95,7 @@ export class Validator extends Component {
 
   handleFormValueChange = (props) => {
     joiValidate(props.joi, props.joiObject, props.data)
-      .then(({ isValid, validations }) => this.setState({ isValid, validations }))
+      .then(({ isValid, validations, data }) => this.setState({ isValid, validations, data }))
       .catch(ex => {
         console.log(ex)
         throw ex
@@ -101,6 +103,6 @@ export class Validator extends Component {
   }
 
   render() {
-    return this.props.children(this.state.isValid, this.state.validations)
+    return this.props.children(this.state.isValid, this.state.validations, this.state.data)
   }
 }

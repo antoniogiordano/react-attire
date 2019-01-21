@@ -39,7 +39,7 @@ describe('Joi', () => {
     let data = {yolo: 'swag swag'}
     const form = (
 			<Validator data={data} joiObject={joiObject} joi={myCustomJoi}>
-        {(isValid, validations) => {
+        {(isValid, validations, validatedData) => {
           return <div>
 						<input name="yolo" value={data.yolo} onChange={() => data.yolo = ''}/>
             {
